@@ -6,7 +6,7 @@ on:
     - main
 
 jobs:
-  install_dependencies:
+  building_java_app_manually:
     runs-on: ubuntu-22.04
     name: 
     steps:
@@ -14,8 +14,7 @@ jobs:
       - run: sudo apt update
       - run: sudo apt install unzip curl zip -y
       - run: curl -s "https://get.sdkman.io" | bash
-      - run: source "$HOME/.sdkman/bin/sdkman-init.sh"
-      - run: sdk install java 11.0.16-zulu
+      - run: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 11.0.16-zulu
+      - run: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install gradle 7.4
       - run: ./gradlew :spotlessApply
-      - run: sdk install gradle 7.4
       - run: ./gradlew build
