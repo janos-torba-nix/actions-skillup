@@ -22,8 +22,8 @@ RUN apt install unzip curl zip -y
 USER newuser
 
 RUN curl -s "https://get.sdkman.io" | bash
-RUN ln -s "/home/newuser/.sdkman/bin/sdkman-init.sh" "vars.sh"
-RUN source "vars.sh" && sdk install java 11.0.16-zulu
-RUN source "vars.sh" && sdk install gradle 7.4
-RUN source "vars.sh" && ./gradlew :spotlessApply
-RUN source "vars.sh" && ./gradlew build
+RUN ln -s "/home/newuser/.sdkman/bin/sdkman-init.sh" "init.sh"
+RUN source "init.sh" && sdk install java 11.0.16-zulu
+RUN source "init.sh" && sdk install gradle 7.4
+RUN source "init.sh" && ./gradlew :spotlessApply
+RUN source "init.sh" && ./gradlew build
