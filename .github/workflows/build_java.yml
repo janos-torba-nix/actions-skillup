@@ -7,9 +7,22 @@ on:
     - main
 
 jobs:
-  echo_a_sentence:
+  install_dependencies:
     runs-on: ubuntu-22.04
-    name: build
+    name: 
     steps:
       - uses: actions/checkout@v2
-      - run: echo 'It just works.'
+      - run: apt update
+      - run: apt install unzip curl zip -y
+      - run: curl -s "https://get.sdkman.io" | bash
+      - run: source "$HOME/.sdkman/bin/sdkman-init.sh"
+      - name: Set up the environment for Java
+        run: sdk install java 11.0.16-zulu
+      - name: Spotless plugin build
+        run: ./gradlew :spotlessApply
+      - run: sdk install gradle 7.4
+      - name: Java application clean build using Gradle
+        run: ./gradlew build
+
+# docker run -it --rm --name ubuntu -v $(pwd):/d ubuntu:22.04 /bin/bash
+# apt update && apt install unzip curl zip -y && curl -s "https://get.sdkman.io" | source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 11.0.16-zulu && ./gradlew :spotlessApply && 
