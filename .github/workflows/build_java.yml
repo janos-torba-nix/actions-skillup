@@ -14,8 +14,10 @@ jobs:
       - run: sudo apt update
       - run: sudo apt install unzip curl zip -y
       - run: curl -s "https://get.sdkman.io" | bash
-      - run: source "$HOME/.sdkman/bin/sdkman-init.sh"
-      - run: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 11.0.16-zulu
-      - run: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install gradle 7.4
-      - run: ./gradlew :spotlessApply
-      - run: ./gradlew build
+      - run: cat "$HOME/.sdkman/bin/sdkman-init.sh"
+      - run: echo "test" >> ~/.bashrc
+      - run: cat ~/.bashrc
+      # - run: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 11.0.16-zulu
+      # - run: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install gradle 7.4
+      # - run: ./gradlew :spotlessApply
+      # - run: ./gradlew build
