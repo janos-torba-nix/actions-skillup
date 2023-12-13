@@ -1,4 +1,4 @@
-name: 02_build_java.yml
+name: 03_build_java.yml using gradle-build-action
 
 on:
   push:
@@ -6,16 +6,21 @@ on:
     - main
 
 jobs:
-  building_java_app_manually:
+  build-gradle-project:
     runs-on: ubuntu-22.04
-    name: 
     steps:
-      - uses: actions/checkout@v2
-      - run: sudo apt update
-      - run: sudo apt install unzip curl zip -y
-      - run: curl -s "https://get.sdkman.io" | bash
-      - run: ln -s "$HOME/.sdkman/bin/sdkman-init.sh" "init.sh"
-      - run: source "init.sh" && sdk install java 11.0.16-zulu
-      - run: source "init.sh" && sdk install gradle 7.4
-      - run: source "init.sh" && ./gradlew :spotlessApply
-      - run: source "init.sh" && ./gradlew build
+    - name: Checkout project sources
+      uses: actions/checkout@v2
+    - name: Setup java
+      uses: actions/setup-java@v3
+      with:
+        distribution: zulu
+        java-version: 11.0.16
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 7.4
+    - name: Run build of spotlessApply plugin with Gradle Wrapper
+      run: ./gradlew :spotlessApply
+    - name: Run build of project with Gradle Wrapper
+      run: ./gradlew build
