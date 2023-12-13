@@ -1,0 +1,1 @@
+docker run -it --rm --name ubuntu -v $(pwd):/d ubuntu:22.04 /bin/bash
