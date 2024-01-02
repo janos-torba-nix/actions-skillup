@@ -1,51 +1,41 @@
-name: Share data between jobs
+name: 04_build_java.yml and saving the build artifact
 
-on: [push]
+on:
+  push:
+    branches:
+    - main
 
 jobs:
-  job_1:
-    name: Add 3 and 7
-    runs-on: ubuntu-latest
+  build-gradle-project-and-upload-artifact:
+    runs-on: ubuntu-22.04
     steps:
-      - shell: bash
-        run: |
-          expr 3 + 7 > math-homework.txt
-      - name: Upload math result for job 1
-        uses: actions/upload-artifact@v3
-        with:
-          name: homework
-          path: math-homework.txt
-
-  job_2:
-    name: Multiply by 9
-    needs: job_1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download math result for job 1
-        uses: actions/download-artifact@v3
-        with:
-          name: homework
-      - shell: bash
-        run: |
-          value=`cat math-homework.txt`
-          expr $value \* 9 > math-homework.txt
-      - name: Upload math result for job 2
-        uses: actions/upload-artifact@v3
-        with:
-          name: homework
-          path: math-homework.txt
-
-  job_3:
-    name: Display results
-    needs: job_2
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download math result for job 2
-        uses: actions/download-artifact@v3
-        with:
-          name: homework
-      - name: Print the final result
-        shell: bash
-        run: |
-          value=`cat math-homework.txt`
-          echo The result is $value
+    - name: Checkout project sources
+      uses: actions/checkout@v2
+    - name: Setup java
+      uses: actions/setup-java@v3
+      with:
+        distribution: zulu
+        java-version: 11.0.16
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 7.4
+    - name: Run build of spotlessApply plugin with Gradle Wrapper
+      run: ./gradlew :spotlessApply
+    - name: Run build of project with Gradle Wrapper
+      run: ./gradlew build
+    - name: Create the zip file
+      run: zip compiled-jar.zip build/libs/*.jar
+    - name: Check zip file
+      run: |
+        JARS="$(zip -Tv compiled-jar.zip|grep -E '^\s*testing:.*\.jar\s*OK$'|wc -l)";
+        if [ "$JARS" == "2" ]; then
+          echo "Zip contains exactly 2 jar files."; true;
+        else
+          echo "Error."; false;
+        fi
+    - name: Upload build result of this job
+      uses: actions/upload-artifact@v3
+      with:
+        name: compiled-jar
+        path: compiled-jar.zip
