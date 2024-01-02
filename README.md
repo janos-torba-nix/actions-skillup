@@ -1,4 +1,4 @@
-[![01_shellcheck.yml adding secondary checks](https://github.com/janos-torba-nix/actions-skillup/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/janos-torba-nix/actions-skillup/actions/workflows/shellcheck.yml)
+[![shellcheck](https://github.com/janos-torba-nix/actions-skillup/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/janos-torba-nix/actions-skillup/actions/workflows/shellcheck.yml)
 
 # ![RealWorld Example App using Kotlin and Spring](example-logo.png)
 
