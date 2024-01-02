@@ -1,4 +1,4 @@
-name: 02_build_java.yml
+name: build_java
 
 on:
   push:

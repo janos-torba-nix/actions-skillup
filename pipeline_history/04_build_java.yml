@@ -1,4 +1,6 @@
-name: 04_build_java.yml and saving the build artifact and checking
+name: build_java
+
+run-name: saving the build artifact and checking
 
 on:
   push:

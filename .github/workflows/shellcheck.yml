@@ -1,5 +1,6 @@
 name: shellcheck
-#name: 01_shellcheck.yml adding secondary checks
+
+run-name: adding secondary checks
 
 on:
   schedule:

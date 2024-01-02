@@ -1,4 +1,6 @@
-name: 03_build_java.yml using gradle-build-action
+name: build_java
+
+run-name: using gradle-build-action
 
 on:
   push:

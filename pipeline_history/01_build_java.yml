@@ -1,4 +1,5 @@
-name: learn-github-actions
+name: build_java
+
 run-name: ${{ github.actor }} is learning GitHub Actions
 
 on:
