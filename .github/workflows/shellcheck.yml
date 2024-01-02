@@ -36,8 +36,8 @@ jobs:
     - name: Checkout project sources
       uses: actions/checkout@v2
     - name: Install ShellCheck
-      run: apt update
+      run: sudo apt update
     - name: Install ShellCheck
-      run: apt install -y shellcheck
+      run: sudo apt install -y shellcheck
     - name: Run ShellCheck
       run: shellcheck pre_deploy.sh 
