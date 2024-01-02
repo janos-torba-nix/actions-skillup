@@ -34,8 +34,9 @@ function backup_database {
     cd "/backup/$DB_TYPE/" || return
     if [ "$(find . -maxdepth 1 -type d ! -name '\.' | wc -l)" -gt "30" ]; then
         echo "Deleting old backups. Leaving the latest 30."
-        rm -rf $(find . -maxdepth 1 -type d ! -name '\.' | head -n -30)
-        backup_database
+        for OLD_DIR in $(find . -maxdepth 1 -type d ! -name '\.' | head -n -30); do
+          rm -rf "${OLD_DIR}"
+        done
     fi
   )
 }
