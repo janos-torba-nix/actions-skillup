@@ -1,4 +1,4 @@
-name: 04_build_java.yml and saving the build artifact
+name: 04_build_java.yml and saving the build artifact and checking
 
 on:
   push:
@@ -24,18 +24,27 @@ jobs:
       run: ./gradlew :spotlessApply
     - name: Run build of project with Gradle Wrapper
       run: ./gradlew build
-    - name: Create the zip file
-      run: zip compiled-jar.zip build/libs/*.jar
-    - name: Check zip file
-      run: |
-        JARS="$(zip -Tv compiled-jar.zip|grep -E '^\s*testing:.*\.jar\s*OK$'|wc -l)";
-        if [ "$JARS" == "2" ]; then
-          echo "Zip contains exactly 2 jar files."; true;
-        else
-          echo "Error."; false;
-        fi
+#    - name: Create the zip file
+#      run: zip ${{ secrets.ARTIFACT_NAME }}.zip build/libs/*.jar
     - name: Upload build result of this job
       uses: actions/upload-artifact@v3
       with:
-        name: compiled-jar
-        path: compiled-jar.zip
+        name: ${{ secrets.ARTIFACT_NAME }}
+        path: build/libs/*.jar
+
+  check-artifact-contents:
+    needs: build-gradle-project-and-upload-artifact
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download build result of previous job
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ secrets.ARTIFACT_NAME }}
+      - name: Check zip file
+        run: |
+          JARS="$(zip -Tv ${{ secrets.ARTIFACT_NAME }}.zip|grep -E '^\s*testing:.*\.jar\s*OK$'|wc -l)";
+          if [ "$JARS" == "2" ]; then
+            echo "Zip contains exactly 2 jar files."; true;
+          else
+            echo "Error."; false;
+          fi
