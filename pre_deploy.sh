@@ -17,23 +17,27 @@ function backup_database {
   fi
   BACKUP_DIR="/backup/$DB_TYPE/$(date +'%d-%m-%Y')/"
   mkdir -p "$BACKUP_DIR"
-  cd "$BACKUP_DIR"
-  echo "In dir ${BACKUP_DIR} using '$DUMP_APP_NAME' to create backups from '$DB_TYPE' server."
-  for DB in $DB_LIST; do
-    echo "Creating backup for '${DB}' database."
-    $DUMP_APP_NAME $DB >$DB.sql
-    tar czf ${DB}.sql.tgz ${DB}.sql
-    rm -f ${DB}.sql
-  done
-  echo "Created backups today from '$DB_TYPE' server:"
-  ls -lh "$BACKUP_DIR" | tail -n +2
-  echo "Done."
-  cd ..
-  if [ "$(ls | wc -l)" -gt "30" ]; then
-    echo "Deleting old backups. Leaving the last 30."
-    rm -rf $(ls -1 | head -n -30)
-    backup_database
-  fi
+  (
+    cd "$BACKUP_DIR" || return
+    echo "In dir ${BACKUP_DIR} using '$DUMP_APP_NAME' to create backups from '$DB_TYPE' server."
+    for DB in $DB_LIST; do
+        echo "Creating backup for '${DB}' database."
+        $DUMP_APP_NAME "${DB}" >"${DB}".sql
+        tar czf "${DB}".sql.tgz "${DB}".sql
+        rm -f "${DB}".sql
+    done
+    echo "Created backups today from '$DB_TYPE' server:"
+    find . -maxdepth 1 -type f
+    echo "Done."
+  )
+  (
+    cd "/backup/$DB_TYPE/" || return
+    if [ "$(find . -maxdepth 1 -type d ! -name '\.' | wc -l)" -gt "30" ]; then
+        echo "Deleting old backups. Leaving the latest 30."
+        rm -rf $(find . -maxdepth 1 -type d ! -name '\.' | head -n -30)
+        backup_database
+    fi
+  )
 }
 
 yum install mariadb-server
