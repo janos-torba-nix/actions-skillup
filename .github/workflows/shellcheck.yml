@@ -29,7 +29,7 @@ jobs:
         wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${scversion?}/shellcheck-${scversion?}.linux.x86_64.tar.xz" | tar -xJv;
         cp -f "shellcheck-${scversion}/shellcheck" /usr/local/bin
     - name: Run ShellCheck
-      run: shellcheck pre_deploy.sh 
+      run: if shellcheck pre_deploy.sh; then echo "Successfully scanned pre_deploy.sh, no errors."; true; else false; fi # we have to pass false result to pipeline in case of fail
   with-apt-install:
     runs-on: ubuntu-22.04
     steps:
@@ -40,4 +40,4 @@ jobs:
     - name: Install ShellCheck
       run: sudo apt install -y shellcheck
     - name: Run ShellCheck
-      run: shellcheck pre_deploy.sh 
+      run: if shellcheck pre_deploy.sh; then echo "Successfully scanned pre_deploy.sh, no errors."; true; else false; fi # we have to pass false result to pipeline in case of fail
