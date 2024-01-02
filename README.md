@@ -1,3 +1,5 @@
+[![01_shellcheck.yml adding secondary checks](https://github.com/janos-torba-nix/actions-skillup/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/janos-torba-nix/actions-skillup/actions/workflows/shellcheck.yml)
+
 # ![RealWorld Example App using Kotlin and Spring](example-logo.png)
 
 > ### Spring boot + MyBatis codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
