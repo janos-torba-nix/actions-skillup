@@ -40,5 +40,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ${{ secrets.ARTIFACT_NAME }}
+      - name: list all files
+        run: find
       - name: Check zip file
         run: if [ "$(ls -1 build/libs/*.jar | tee /dev/stderr | wc -l)" == "2" ]; then echo "OK."; true; else echo "Error."; false; fi
+    
