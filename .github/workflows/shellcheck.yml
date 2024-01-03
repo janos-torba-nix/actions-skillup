@@ -1,6 +1,6 @@
 name: shellcheck
 
-run-name: adding secondary checks
+run-name: secondary checks
 
 on:
   schedule:

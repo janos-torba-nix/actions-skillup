@@ -1,6 +1,6 @@
 name: build_java
 
-run-name: saving the build artifact and checking
+run-name: build the artifact and save
 
 on:
   push:
@@ -26,8 +26,6 @@ jobs:
       run: ./gradlew :spotlessApply
     - name: Run build of project with Gradle Wrapper
       run: ./gradlew build
-#    - name: Create the zip file
-#      run: zip ${{ secrets.ARTIFACT_NAME }}.zip build/libs/*.jar
     - name: Upload build result of this job
       uses: actions/upload-artifact@v3
       with:
