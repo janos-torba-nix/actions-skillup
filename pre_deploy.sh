@@ -51,3 +51,6 @@ GRANT ALL PRIVILEGES ON postfixadmin.* TO postfixadmin@localhost;
 FLUSH PRIVILEGES;' | mariadb --force
 
 backup_database "mysql" "$(echo 'SHOW DATABASES;'  | mariadb | tail -n +2 | grep -vE '(performance_schema|information_schema)')"
+
+BAD_VARIABLE="bad value"
+echo $BAD_VARIABLE
